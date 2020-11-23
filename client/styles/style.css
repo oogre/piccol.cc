@@ -1,0 +1,132 @@
+/*
+* @Author: Evrard Vincent
+* @Date:   2020-11-19 12:12:26
+* @Last Modified by:   oogre
+* @Last Modified time: 2020-11-23 17:37:52
+*/
+html, body{
+	margin:0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background : #040000;
+	color: #ffdede;
+	font-family: monospace;
+	font-weight: normal;
+	font-size: 20px;
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+}
+a{
+	color: #ffdede;
+	text-decoration: none;
+}
+a:hover{
+	color: #ffffff;
+	text-decoration: underline;
+}
+header{
+	flex: 0 1 auto;
+}
+
+content{
+	flex: 1 1 auto;
+	display: flex;
+	flex-flow: row;
+}
+
+section u:after{
+	content: '';
+	height: 23px;
+	display: block;
+}
+
+section.sidebar{
+	flex: 0 1 auto;
+	width: 350px;
+	overflow: scroll;
+}
+
+section.main{
+	flex: 1 1 auto;
+}
+
+section ul{
+	margin:0;
+	padding: 0 23px;
+	list-style-type: "- ";
+}
+
+ul#imageList{
+	margin:0;
+	padding: 0;
+	list-style-type: none;
+}
+ul#imageList li {
+	list-style-type: none;
+	width: 400px;
+	height: 300px;
+	display: inline-block;
+	margin: 2px;
+	background-size: contain;
+	background-position: center top;
+	background-repeat: no-repeat;
+	text-align: right;
+}
+input{
+	border:solid 1px #000; 
+	height: 22px;
+	padding: 0;
+	height: 22px;
+	width: 200px;
+	font-family: monospace;
+}
+input[type=submit]{
+	width: 100px;
+	background-color: #ffdede;
+}
+input[type=submit]:hover{
+	background-color: #ffffff;
+}
+button{
+	opacity: 0;
+	border: none;
+	width: 45px;
+	height: 30px;
+	padding: 0;
+	background: transparent;
+	color: #ffdede;
+	
+}
+ul#imageList li:hover button{
+	opacity: 1;
+}
+button:hover{
+	color: red;
+	cursor: pointer;
+}
+[data-image-loading] {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+[data-image-loading]:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+  margin: 100px auto;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
