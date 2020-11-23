@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "./node_modules/.bin/babel src/client --out-dir client/build ; browserify client/build/board.js --outfile client/dist/board.js ; browserify client/build/index.js --outfile client/dist/index.js ; browserify client/build/initialization.js --outfile client/dist/initialization.js ; ./node_modules/.bin/babel src/server --out-dir server ;chmod u+x ./server/main.js;",
-    "start": "./node_modules/.bin/babel src/client --out-dir client/build ; browserify client/build/board.js --outfile client/dist/board.js ; browserify client/build/index.js --outfile client/dist/index.js ; browserify client/build/initialization.js --outfile client/dist/initialization.js ; ./node_modules/.bin/babel src/server --out-dir server ;chmod u+x ./server/main.js; ./server/main.js"
+    "start": "./server/main.js"
   },
   "author": "",
   "license": "ISC",
