@@ -4,7 +4,7 @@
   readWiki - main.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-10-26 14:15:32
-  @Last Modified time: 2020-11-24 12:54:08
+  @Last Modified time: 2020-11-24 12:59:52
 \*----------------------------------------*/
 
 import {OAuth} from "oauth";
@@ -174,4 +174,5 @@ const main = async ()=>{
 	}
 	app.listen(3000)
 }
+main();
 
