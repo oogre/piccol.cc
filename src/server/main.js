@@ -4,7 +4,7 @@
   readWiki - main.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-10-26 14:15:32
-  @Last Modified time: 2020-11-24 17:11:23
+  @Last Modified time: 2020-11-24 17:15:18
 \*----------------------------------------*/
 
 import {OAuth} from "oauth";
@@ -83,7 +83,8 @@ const APIEntries = [{
 	type : "POST",
 	action : async (req, res) => {
 		const {files} = req;
-		const {boardName} = req.body;
+		let {boardName} = req.body;
+		boardName = decodeURIComponent(boardName);
 		const imgbb = new Imgbb({ key: await readFile(`${process.env.PWD}/boards/${boardName}/imgbbKey`) });
 		const data = await imgbb.upload(files.file.data.toString('base64'), null);
 		if(data.success){
@@ -101,7 +102,8 @@ const APIEntries = [{
 	route : '/remove',
 	type : "POST",
 	action : async ({body}, res) => {
-		const {id, boardName} = body;
+		let {id, boardName} = body;
+		boardName = decodeURIComponent(boardName);
 		const rawContent = await readFile(`${process.env.PWD}/boards/${boardName}/content.json`);
 		const content = JSON.parse(rawContent) || [];
 		const elementId = content.findIndex(({data}) => data.id === id);
@@ -119,7 +121,8 @@ const APIEntries = [{
 	route : '/content',
 	type : "GET",
 	action : async ({query}, res) => {
-		const {boardName} = query;
+		let {boardName} = query;
+		boardName = decodeURIComponent(boardName);
 		const isBoardExist = await exists(`${process.env.PWD}/boards/${boardName}`);
 		if(isBoardExist){
 			const rawContent = await readFile(`${process.env.PWD}/boards/${boardName}/content.json`);
