@@ -2,7 +2,7 @@
   collaborativeImageBoard - tools.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-11-19 12:17:20
-  @Last Modified time: 2020-11-20 09:03:08
+  @Last Modified time: 2020-11-24 17:54:37
 \*----------------------------------------*/
 export const docReady = fn => {
 	// see if DOM is already available
@@ -32,7 +32,7 @@ export const uploadFile = file => {
 	.then(response => response.json())
 	.then(data => {
 		if(!data.success)return new Error();
-		return true;
+		return data;
 	})
 }
 export const removeFile = id => {
@@ -47,7 +47,7 @@ export const removeFile = id => {
 	.then(response => response.json())
 	.then(data => {
 		if(!data.success)return new Error();
-		return true;
+		return data;
 	})
 }
 

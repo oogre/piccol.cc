@@ -1,10 +1,22 @@
 
-import {docReady, loadData, handleFiles, isVisible, removeFile} from "./tools.js";
+import {docReady, loadData, uploadFile, isVisible, removeFile} from "./tools.js";
 
 const handleFilesWrapper = (files) => {
-	handleFiles(files)
-	.then(()=>{
-		location.reload();
+	[...files].map(file => {
+		const li =  document.createElement("li");
+		const reader = new FileReader();
+		reader.addEventListener('load', (event) => {
+			li.style.backgroundImage = `url(${event.target.result})`;
+			li.setAttribute("data-image-loading",true);
+			document.querySelector("ul#imageList").prepend(li);	
+		});
+		reader.readAsDataURL(file);
+		uploadFile(file)
+		.then(({content}) => {
+			const {image} = content;
+			li.setAttribute("data-image-fullsize",image.fullsize);
+			li.removeAttribute("data-image-loading");
+		})
 	});
 }
 
@@ -39,9 +51,8 @@ docReady( async ()=>{
 
 	const list = await loadData();
 	
-	list.map(({id, image})=>{
+	list.map(({image})=>{
 		const li =  document.createElement("li");
-		li.id = id;
 		li.setAttribute("data-image",image.medium);
 		li.setAttribute("data-image-fullsize",image.fullsize);
 		li.addEventListener("hasToBeDisplayed", displayPicture, false);

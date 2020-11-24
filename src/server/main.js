@@ -4,7 +4,7 @@
   readWiki - main.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-10-26 14:15:32
-  @Last Modified time: 2020-11-24 17:15:18
+  @Last Modified time: 2020-11-24 17:59:04
 \*----------------------------------------*/
 
 import {OAuth} from "oauth";
@@ -88,12 +88,22 @@ const APIEntries = [{
 		const imgbb = new Imgbb({ key: await readFile(`${process.env.PWD}/boards/${boardName}/imgbbKey`) });
 		const data = await imgbb.upload(files.file.data.toString('base64'), null);
 		if(data.success){
+			const img = data.data;
 			const rawContent = await readFile(`${process.env.PWD}/boards/${boardName}/content.json`);
 			const content = JSON.parse(rawContent) || [];
 			content.unshift(data);
 			await writeFile(`${process.env.PWD}/boards/${boardName}/content.json`, JSON.stringify(content, null, '\t'));
 			res.setHeader('Content-Type', 'application/json');
-	    	return res.end(JSON.stringify({ success: true }));
+	    	return res.end(JSON.stringify({ 
+	    		success: true,  
+	    		content : {
+					id : img.id, 
+					image : {
+						fullSize : img.image.url,
+						medium : img.medium?.url || img.image.url
+					}
+				}
+	    	}));
 		}
 		res.setHeader('Content-Type', 'application/json');
 		return res.end(JSON.stringify({ success: false }));
@@ -131,15 +141,15 @@ const APIEntries = [{
 				res.setHeader('Content-Type', 'application/json');
 		    	return res.end(JSON.stringify({ 
 		    		success: true, 
-		    		content : content.map(({data}) => {
-		    			return {
-		    				id : data.id, 
-		    				image : {
-		    					fullSize : data.image.url,
-		    					medium : data.medium?.url || data.image.url
-		    				}
-		    			}
-		    		})
+					content : content.map(({data}) => {
+						return {
+							id : data.id, 
+							image : {
+								fullSize : data.image.url,
+								medium : data.medium?.url || data.image.url
+							}
+						}
+					})
 		    	}));
 			}
 		}
