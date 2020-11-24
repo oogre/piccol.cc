@@ -1,4 +1,7 @@
 boards/*
+client/dist/*
+client/build/*
+server/*
 
 # Logs
 logs

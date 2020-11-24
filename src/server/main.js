@@ -4,7 +4,7 @@
   readWiki - main.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-10-26 14:15:32
-  @Last Modified time: 2020-11-24 00:11:32
+  @Last Modified time: 2020-11-24 12:54:08
 \*----------------------------------------*/
 
 import {OAuth} from "oauth";
@@ -167,5 +167,11 @@ APIEntries.map(({route, type, action})=>{
 	}
 });
 
+const main = async ()=>{
+	const isBoardExist = await exists(`${process.env.PWD}/boards`);
+	if(isBoardExist){
+		await mkdir(`${process.env.PWD}/boards`);
+	}
+	app.listen(3000)
+}
 
-app.listen(3000)
