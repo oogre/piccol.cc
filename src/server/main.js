@@ -4,7 +4,7 @@
   readWiki - main.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-10-26 14:15:32
-  @Last Modified time: 2020-11-24 12:59:52
+  @Last Modified time: 2020-11-24 13:59:22
 \*----------------------------------------*/
 
 import {OAuth} from "oauth";
@@ -30,7 +30,7 @@ app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(Express.static("client"));
 
-console.log(process.env.PWD);
+console.log(process.env.NODE_PATH);
 
 const APIEntries = [{
 	route : "/favicon.ico",
@@ -172,7 +172,7 @@ const main = async ()=>{
 	if(isBoardExist){
 		await mkdir(`${process.env.PWD}/boards`);
 	}
-	app.listen(3000)
+	app.listen(8080)
 }
 main();
 
