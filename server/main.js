@@ -4,7 +4,7 @@
   readWiki - main.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-10-26 14:15:32
-  @Last Modified time: 2020-11-20 14:06:40
+  @Last Modified time: 2020-11-24 00:11:32
 \*----------------------------------------*/
 "use strict";
 
@@ -42,6 +42,7 @@ app.use(_bodyParser.default.urlencoded({
   extended: true
 }));
 app.use(_express.default.static("client"));
+console.log(process.env.PWD);
 const APIEntries = [{
   route: "/favicon.ico",
   type: "GET",

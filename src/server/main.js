@@ -4,7 +4,7 @@
   readWiki - main.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-10-26 14:15:32
-  @Last Modified time: 2020-11-20 14:06:40
+  @Last Modified time: 2020-11-24 00:11:32
 \*----------------------------------------*/
 
 import {OAuth} from "oauth";
@@ -30,6 +30,8 @@ app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(Express.static("client"));
 
+console.log(process.env.PWD);
+
 const APIEntries = [{
 	route : "/favicon.ico",
 	type : "GET",
@@ -47,6 +49,7 @@ const APIEntries = [{
 			res.setHeader('Content-Type', 'application/json');
 			return res.end(JSON.stringify({ success: false }));
 		}
+
 		const isBoardExist = await exists(`${process.env.PWD}/boards/${boardName}`);
 		if(isBoardExist){
 			res.setHeader('Content-Type', 'application/json');
