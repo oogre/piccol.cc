@@ -4,7 +4,7 @@
   readWiki - main.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-10-26 14:15:32
-  @Last Modified time: 2020-11-24 16:37:24
+  @Last Modified time: 2020-11-24 17:11:23
 \*----------------------------------------*/
 
 import {OAuth} from "oauth";
@@ -30,8 +30,6 @@ app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(Express.static("client"));
 
-console.log(process.env.NODE_PATH);
-
 const APIEntries = [{
 	route : "/favicon.ico",
 	type : "GET",
@@ -44,7 +42,8 @@ const APIEntries = [{
 	route : "/init",
 	type : "POST",
 	action : async ({body}, res) => {
-		const {boardName, imgbbKey} = body;
+		let {boardName, imgbbKey} = body;
+		boardName = decodeURIComponent(boardName);
 		if(APIEntries.map(({route})=>route.substr(1)).includes(boardName)){
 			res.setHeader('Content-Type', 'application/json');
 			return res.end(JSON.stringify({ success: false }));
@@ -148,7 +147,8 @@ const APIEntries = [{
 	route : '/:boardName',
 	type : "GET",
 	action : async ({params}, res) => {
-		const {boardName} = params;
+		let {boardName} = params;
+		boardName = decodeURIComponent(boardName);
 		const isBoardExist = await exists(`${process.env.PWD}/boards/${boardName}`);
 		if(isBoardExist){
 			res.sendFile(`${process.env.PWD}/client/ui/board.html`);

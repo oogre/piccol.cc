@@ -9,7 +9,7 @@ const handleFilesWrapper = (files) => {
 }
 
 docReady( async ()=>{
-	document.querySelector("h3").innerText = location.pathname.substring(1);
+	document.querySelector("h3").innerText = decodeURIComponent(location.pathname.substring(1));
 
 	['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
 		document.body.addEventListener(eventName, e => {

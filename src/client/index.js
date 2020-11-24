@@ -17,7 +17,7 @@ docReady(async ()=>{
 	document.querySelector("form")
 	.addEventListener(
 		"submit", 
-		event => location = event.target.boardName.value, 
+		event => location = encodeURIComponent(event.target.boardName.value), 
 		false
 	);
 
