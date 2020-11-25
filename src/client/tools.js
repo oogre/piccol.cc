@@ -2,7 +2,7 @@
   collaborativeImageBoard - tools.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-11-19 12:17:20
-  @Last Modified time: 2020-11-24 17:54:37
+  @Last Modified time: 2020-11-25 19:31:17
 \*----------------------------------------*/
 export const docReady = fn => {
 	// see if DOM is already available
@@ -23,7 +23,7 @@ export const handleFiles = files => {
 export const uploadFile = file => {
 	const formData = new FormData()
 	formData.append('file', file)
-	formData.append('boardName', location.pathname.substring(1))
+	formData.append('boardName', encodeURIComponent(getBoardNameFromLocation()))
 
 	return fetch('/add', {
 		method: 'POST',
@@ -38,7 +38,7 @@ export const uploadFile = file => {
 export const removeFile = id => {
 	const formData = new FormData()
 	formData.append('id', id)
-	formData.append('boardName', location.pathname.substring(1))
+	formData.append('boardName', encodeURIComponent(getBoardNameFromLocation()))
 
 	return fetch('/remove', {
 		method: 'POST',
@@ -53,7 +53,7 @@ export const removeFile = id => {
 
 export const loadData = () => {
 	var url = new URL(`${location.origin}/content`);
-	url.search = new URLSearchParams({boardName:location.pathname.substring(1)}).toString();
+	url.search = new URLSearchParams({ boardName : encodeURIComponent(getBoardNameFromLocation()) }).toString();
 	return fetch(url)
 	.then(response => response.json())
 	.then(data => {
@@ -87,7 +87,7 @@ export const submitInit = ({target}) => {
 	});
 }
 
-export function isVisible(elem) {
+export const isVisible = (elem) => {
     if (!(elem instanceof Element)) throw Error('DomUtil: elem is not an element.');
     const style = getComputedStyle(elem);
     if (style.display === 'none') return false;
@@ -111,4 +111,8 @@ export function isVisible(elem) {
         if (pointContainer === elem) return true;
     } while (pointContainer && (pointContainer = pointContainer.parentNode));
     return false;
+}
+
+export const getBoardNameFromLocation = ()=>{
+	return decodeURIComponent(location.href.substring(location.protocol.length+2+location.host.length+1));
 }

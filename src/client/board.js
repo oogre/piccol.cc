@@ -1,5 +1,5 @@
 
-import {docReady, loadData, uploadFile, isVisible, removeFile} from "./tools.js";
+import {docReady, loadData, uploadFile, isVisible, removeFile, getBoardNameFromLocation} from "./tools.js";
 
 const handleFilesWrapper = (files) => {
 	[...files].map(file => {
@@ -21,7 +21,8 @@ const handleFilesWrapper = (files) => {
 }
 
 docReady( async ()=>{
-	document.querySelector("h3").innerText = decodeURIComponent(location.pathname.substring(1));
+	console.log(getBoardNameFromLocation());
+	document.querySelector("h3").innerText = getBoardNameFromLocation();
 
 	['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
 		document.body.addEventListener(eventName, e => {

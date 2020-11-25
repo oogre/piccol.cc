@@ -4,7 +4,7 @@
   readWiki - main.js
   @author Evrard Vincent (vincent@ogre.be)
   @Date:   2020-10-26 14:15:32
-  @Last Modified time: 2020-11-24 17:59:04
+  @Last Modified time: 2020-11-25 19:27:35
 \*----------------------------------------*/
 
 import {OAuth} from "oauth";
@@ -35,19 +35,15 @@ const APIEntries = [{
 	type : "GET",
 	action : async (req, res)=>{}
 },{
-	route : "/",
-	type : "GET",
-	action : async (req, res)=> res.sendFile(`${process.env.PWD}/client/ui/index.html`)
-},{
 	route : "/init",
 	type : "POST",
 	action : async ({body}, res) => {
 		let {boardName, imgbbKey} = body;
 		boardName = decodeURIComponent(boardName);
-		if(APIEntries.map(({route})=>route.substr(1)).includes(boardName)){
-			res.setHeader('Content-Type', 'application/json');
-			return res.end(JSON.stringify({ success: false }));
-		}
+		//if(APIEntries.map(({route})=> route.substr(1)).includes(boardName) ){
+		//	res.setHeader('Content-Type', 'application/json');
+		//	return res.end(JSON.stringify({ success: false }));
+		//}
 
 		const isBoardExist = await exists(`${process.env.PWD}/boards/${boardName}`);
 		if(isBoardExist){
@@ -71,7 +67,22 @@ const APIEntries = [{
 	route : '/list',
 	type : "GET",
 	action : async (req, res) => {
-		const rawContent = await readDir(`${process.env.PWD}/boards`);
+		const boardList = async ()=>{
+			const rawContent = await readDir(`${process.env.PWD}/boards`);
+			return await Promise.all(
+				rawContent
+				.map(async boardName => {
+					let lastUpdate = 0;
+					const isLastUpdateExist = await exists(`${process.env.PWD}/boards/${boardName}/lastUpdate`);
+					if(isLastUpdateExist) lastUpdate = await readFile(`${process.env.PWD}/boards/${boardName}/lastUpdate`, "utf8");
+					return {
+						boardName,
+						lastUpdate : parseInt(lastUpdate)
+					}
+				})
+			);
+		}
+		const rawContent = (await boardList()).sort((a, b)=>a.lastUpdate<b.lastUpdate).map(({boardName})=>boardName);
 		res.setHeader('Content-Type', 'application/json');
 		return res.end(JSON.stringify({ 
 			success: true, 
@@ -92,6 +103,7 @@ const APIEntries = [{
 			const rawContent = await readFile(`${process.env.PWD}/boards/${boardName}/content.json`);
 			const content = JSON.parse(rawContent) || [];
 			content.unshift(data);
+			await writeFile(`${process.env.PWD}/boards/${boardName}/lastUpdate`, Date.now());
 			await writeFile(`${process.env.PWD}/boards/${boardName}/content.json`, JSON.stringify(content, null, '\t'));
 			res.setHeader('Content-Type', 'application/json');
 	    	return res.end(JSON.stringify({ 
@@ -157,17 +169,16 @@ const APIEntries = [{
 		return res.end(JSON.stringify({ success: false }));
 	}
 },{
-	route : '/:boardName',
+	route : "*",
 	type : "GET",
-	action : async ({params}, res) => {
-		let {boardName} = params;
-		boardName = decodeURIComponent(boardName);
-		const isBoardExist = await exists(`${process.env.PWD}/boards/${boardName}`);
-		if(isBoardExist){
-			res.sendFile(`${process.env.PWD}/client/ui/board.html`);
-		}else{
-			res.sendFile(`${process.env.PWD}/client/ui/initialization.html`);
+	action : async ({url}, res)=> {
+		const boardName = decodeURIComponent(url).substring(1);
+		if(boardName){
+			const isBoardExist = await exists(`${process.env.PWD}/boards/${boardName}`);
+			if(isBoardExist) return res.sendFile(`${process.env.PWD}/client/ui/board.html`);
+			return res.sendFile(`${process.env.PWD}/client/ui/initialization.html`);
 		}
+		return res.sendFile(`${process.env.PWD}/client/ui/index.html`)
 	}
 }]
 
