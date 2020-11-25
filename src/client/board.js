@@ -46,6 +46,7 @@ docReady( async ()=>{
 
 	document.body.addEventListener('drop', ({dataTransfer}) => {
 		const {files} = dataTransfer;
+		//var imageUrl = dataTransfer.getData('Text');
 		handleFilesWrapper(files);
 	}, false);
 

@@ -2,7 +2,7 @@
 * @Author: Evrard Vincent
 * @Date:   2020-11-19 12:12:26
 * @Last Modified by:   oogre
-* @Last Modified time: 2020-11-23 17:37:52
+* @Last Modified time: 2020-11-25 17:08:40
 */
 html, body{
 	margin:0;
@@ -17,6 +17,9 @@ html, body{
 	display: flex;
 	flex-flow: column;
 	height: 100%;
+}
+.hide{
+	display: none;
 }
 a{
 	color: #ffdede;

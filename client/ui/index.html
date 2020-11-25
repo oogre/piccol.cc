@@ -11,14 +11,21 @@
 		<content>
 			<section class="sidebar">
 				<u>List of collections</u>
-				<ul id="boardList"></ul>
+				<form id="filterBoards">
+					<div>
+						<label>Search</label>
+						<input type="text" name="filter" placeholder="filter" autocomplete="off" />
+					</div>
+					
+					<ul id="boardList"></ul>
+				</form>
 			</section>
 			<section class="main">
 				<u>Create new collection</u>
-				<form>
+				<form id="createBoard">
 					<div>
 						<label>Enter a board name</label>
-						<input type="text" name="boardName"/>
+						<input type="text" name="boardName" placeholder="name" autocomplete="off"/>
 					</div>
 					<input type="submit" value="Create"/>
 				</form>
